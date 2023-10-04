@@ -24,9 +24,6 @@ class Tutel(Vehicle):
         self.throttle_min = 400     # Min saturation throttle based of euclidan distance
         self.throttle_max = 1000    # Max saturation throttle based of euclidan distance
 
-
-
-
     def model(self, tL, tR):
         """  Tutel model
                            ___________________
@@ -40,13 +37,11 @@ class Tutel(Vehicle):
                           |                   |---> theta      
                           |___________________|          
         """       
-
         track = self.T 
         dt = self.dt
 
         vL = min(tL, self.throttle_max)
         vR = min(tR, self.throttle_max)
-   
 
         v = (vL + vR ) / 2      # Linear speed
         w = (vR - vL) / track   # Angular speed
@@ -60,8 +55,6 @@ class Tutel(Vehicle):
         self.theta = self.theta + theta_p*dt
 
         return self.x, self.y, self.theta
-
-
 
     def toPoint(self, x, y, eps=0.5):
         """ Move to a point (x, y)
@@ -86,7 +79,6 @@ class Tutel(Vehicle):
             v = max(min(eucli_throttle * Kv, self.throttle_max), self.throttle_min)
             s = sin(PathTools().shortestAngleDiff(steering, self.theta)) * Ks
 
-
             vL = v - s
             vR = v + s
 
@@ -100,20 +92,11 @@ class Tutel(Vehicle):
         s = 1
 
         while fabs(s) > eps_angle:
-
-            s = PathTools().shortestAngleDiff(phi, self.theta) 
+            s = PathTools().shortestAngleDiff(phi, self.theta) * Ks
 
             self.model(-s, s)
 
             yield s 
 
-
-    
     def toPose(self, x, y, theta):
         pass
-
-
-
-
-
-    
